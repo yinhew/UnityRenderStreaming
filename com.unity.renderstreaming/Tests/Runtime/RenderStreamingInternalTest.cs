@@ -39,8 +39,7 @@ namespace Unity.RenderStreaming.RuntimeTest
             UnityEngine.Object.Destroy(test.gameObject);
         }
 
-        // workaround: More time for SetDescription process
-        const float ResendOfferInterval = 1.0f;
+        const float ResendOfferInterval = 0.1f;
 
         private RenderStreamingDependencies CreateDependencies()
         {
