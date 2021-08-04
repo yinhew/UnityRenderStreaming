@@ -41,6 +41,7 @@ namespace Unity.RenderStreaming
 
             foreach (var source in streams.OfType<IStreamSource>())
             {
+                RemoveTrack(connectionId, source.Track);
                 source.SetSender(connectionId, null);
             }
             foreach (var receiver in streams.OfType<IStreamReceiver>())

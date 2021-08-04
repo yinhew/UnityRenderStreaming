@@ -8,7 +8,7 @@ namespace Unity.RenderStreaming
     /// <summary>
     /// 
     /// </summary>
-    public abstract class StreamSourceBase : MonoBehaviour, IStreamSource
+    public abstract class StreamSourceBase : MonoBehaviour, IStreamSource, IDisposable
     {
         /// <summary>
         /// 
@@ -65,6 +65,21 @@ namespace Unity.RenderStreaming
                 m_senders.Add(connectionId, sender);
                 OnStartedStream?.Invoke(connectionId);
             }
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                m_track?.Dispose();
+                m_track = null;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

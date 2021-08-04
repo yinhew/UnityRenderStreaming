@@ -10,10 +10,12 @@ namespace Unity.RenderStreaming
         [SerializeField] private int depth = 0;
         [SerializeField] private int antiAliasing = 1;
 
-
         private Camera m_camera;
+        
         public override Texture SendTexture => m_camera.targetTexture;
 
+        public Vector2Int EncodingResolution { get; set; } = new Vector2Int(1280, 720);
+        
         protected virtual void Awake()
         {
             m_camera = GetComponent<Camera>();
@@ -53,6 +55,21 @@ namespace Unity.RenderStreaming
             }
 
             return new VideoStreamTrack(rt);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            
+            if (!disposing || !m_camera.targetTexture)
+                return;
+            
+            if (RenderTexture.active == m_camera.targetTexture)
+                RenderTexture.active = null;
+
+            var rt = m_camera.targetTexture;
+            m_camera.targetTexture = null;
+            DestroyImmediate(rt);
         }
     }
 }

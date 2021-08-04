@@ -19,13 +19,20 @@ namespace Unity.RenderStreaming
         /// </summary>
         public virtual Texture SendTexture { get; }
 
+        public virtual Vector2Int StreamingSize
+        {
+            get => streamingSize;
+            set => streamingSize = value;
+        }
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="connectionId"></param>
         /// <param name="bitrate"></param>
         /// <param name="framerate"></param>
-        public void ChangeVideoParameters(string connectionId, ulong? bitrate, uint? framerate)
+        /// <param name="scale"></param>
+        public void ChangeVideoParameters(string connectionId, ulong? bitrate, uint? framerate, double? scale)
         {
             if (!Senders.TryGetValue(connectionId, out var sender))
                 return;
@@ -34,6 +41,7 @@ namespace Unity.RenderStreaming
             {
                 if (bitrate != null) encoding.maxBitrate = bitrate;
                 if (framerate != null) encoding.maxFramerate = framerate;
+                if (scale != null) encoding.scaleResolutionDownBy = scale;
             }
             sender.SetParameters(parameters);
         }
