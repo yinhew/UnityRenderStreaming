@@ -105,7 +105,11 @@ namespace Unity.RenderStreaming
                 }
 
                 ScreenCapture.CaptureScreenshotIntoRenderTexture(m_screenTexture);
+#if UNITY_STANDALONE_LINUX || UNITY_ANDROID
+                Graphics.Blit(m_screenTexture, m_sendTexture, new Vector2(1.0f, -1.0f), new Vector2(0.0f, 1.0f));
+#else
                 Graphics.Blit(m_screenTexture, m_sendTexture);
+#endif
             }
         }
     }
