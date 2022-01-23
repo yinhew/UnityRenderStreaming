@@ -24,6 +24,7 @@ async function setup() {
   useWebSocket = res.useWebSocket;
   showWarningIfNeeded(res.startupMode);
   showPlayButton();
+  onClickPlayButton();
 }
 
 function showWarningIfNeeded(startupMode) {
@@ -54,6 +55,7 @@ function onClickPlayButton() {
   // add video player
   const elementVideo = document.createElement('video');
   elementVideo.id = 'Video';
+  elementVideo.muted = true;
   elementVideo.style.touchAction = 'none';
   playerDiv.appendChild(elementVideo);
 
