@@ -17,7 +17,7 @@ body {
 #player:before {
   content: "";
   display: block;
-  padding-top: 66%;
+  padding-top: 56.25%;
 }
 
 #playButton {
