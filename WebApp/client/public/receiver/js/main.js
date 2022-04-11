@@ -55,7 +55,7 @@ function onClickPlayButton() {
   // add video player
   const elementVideo = document.createElement('video');
   elementVideo.id = 'Video';
-  elementVideo.muted = true;
+  elementVideo.muted = false;
   elementVideo.style.touchAction = 'none';
   playerDiv.appendChild(elementVideo);
 
