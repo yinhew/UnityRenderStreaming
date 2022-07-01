@@ -23,7 +23,7 @@ async function setup() {
   const res = await getServerConfig();
   useWebSocket = res.useWebSocket;
   showWarningIfNeeded(res.startupMode);
-  showPlayButton();
+  // showPlayButton();
   onClickPlayButton();
 }
 
@@ -48,53 +48,57 @@ function showPlayButton() {
 
 function onClickPlayButton() {
 
-  playButton.style.display = 'none';
+  // playButton.style.display = 'none';
 
   const playerDiv = document.getElementById('player');
 
   // add video player
   const elementVideo = document.createElement('video');
   elementVideo.id = 'Video';
-  elementVideo.muted = false;
+  if (getQueryParameter('FromBrowser') == '1') {
+    elementVideo.muted = true;
+  } else {
+    elementVideo.muted = false;
+  }
   elementVideo.style.touchAction = 'none';
   playerDiv.appendChild(elementVideo);
 
   setupVideoPlayer(elementVideo).then(value => receiver = value);
 
   // add fullscreen button
-  const elementFullscreenButton = document.createElement('img');
-  elementFullscreenButton.id = 'fullscreenButton';
-  elementFullscreenButton.src = 'images/FullScreen.png';
-  playerDiv.appendChild(elementFullscreenButton);
-  elementFullscreenButton.addEventListener("click", function () {
-    if (!document.fullscreenElement || !document.webkitFullscreenElement) {
-      if (document.documentElement.requestFullscreen) {
-        document.documentElement.requestFullscreen();
-      }
-      else if (document.documentElement.webkitRequestFullscreen) {
-        document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
-      } else {
-        if (playerDiv.style.position == "absolute") {
-          playerDiv.style.position = "relative";
-        } else {
-          playerDiv.style.position = "absolute";
-        }
-      }
-    }
-  });
-  document.addEventListener('webkitfullscreenchange', onFullscreenChange);
-  document.addEventListener('fullscreenchange', onFullscreenChange);
+//  const elementFullscreenButton = document.createElement('img');
+//  elementFullscreenButton.id = 'fullscreenButton';
+//  elementFullscreenButton.src = 'images/FullScreen.png';
+//  playerDiv.appendChild(elementFullscreenButton);
+//  elementFullscreenButton.addEventListener("click", function () {
+//    if (!document.fullscreenElement || !document.webkitFullscreenElement) {
+//      if (document.documentElement.requestFullscreen) {
+//        document.documentElement.requestFullscreen();
+//      }
+//      else if (document.documentElement.webkitRequestFullscreen) {
+//        document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+//      } else {
+//        if (playerDiv.style.position == "absolute") {
+//          playerDiv.style.position = "relative";
+//        } else {
+//          playerDiv.style.position = "absolute";
+//        }
+//      }
+//    }
+//  });
+//  document.addEventListener('webkitfullscreenchange', onFullscreenChange);
+//  document.addEventListener('fullscreenchange', onFullscreenChange);
 
-  function onFullscreenChange() {
-    if (document.webkitFullscreenElement || document.fullscreenElement) {
-      playerDiv.style.position = "absolute";
-      elementFullscreenButton.style.display = 'none';
-    }
-    else {
-      playerDiv.style.position = "relative";
-      elementFullscreenButton.style.display = 'block';
-    }
-  }
+//  function onFullscreenChange() {
+//    if (document.webkitFullscreenElement || document.fullscreenElement) {
+//      playerDiv.style.position = "absolute";
+//      elementFullscreenButton.style.display = 'none';
+//    }
+//    else {
+//      playerDiv.style.position = "relative";
+//      elementFullscreenButton.style.display = 'block';
+//    }
+//  }
 }
 
 async function setupVideoPlayer(elements) {
@@ -111,11 +115,24 @@ function onDisconnect() {
   clearChildren(playerDiv);
   receiver.stop();
   receiver = null;
-  showPlayButton();
+  // showPlayButton();
 }
 
 function clearChildren(element) {
   while (element.firstChild) {
     element.removeChild(element.firstChild);
   }
+}
+
+function getQueryParameter(parameterName) {
+  var query = window.location.search.substring(1);
+  var vars = query.split("&");
+  for (var i = 0; i < vars.length; i++) {
+    var pair = vars[i].split("=");
+    if (pair[0] == parameterName) {
+      return pair[1];
+    }
+  }
+
+  return (false);
 }
